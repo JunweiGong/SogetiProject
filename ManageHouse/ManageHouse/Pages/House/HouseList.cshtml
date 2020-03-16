@@ -1,0 +1,85 @@
+﻿@page
+@model ManageHouse.Pages.House.IndexModel
+@{
+    ViewData["Title"] = "House page";
+}
+
+<script>
+    function myFunction(x) {
+        $("#item_view").modal();
+    };
+    $(document).ready(function () {
+        $("#success-alert").hide();
+        $("#success-alert").fadeTo(2000, 500).slideUp(500, function () {
+            $("#success-alert").slideUp(500);
+        });
+    });
+
+</script>
+
+<div class="container" style="background: #f1f1f2; height: auto; margin-top: 50px;">
+    <div class="mail-box">
+        <aside class="lg-side">
+
+            <div class="houselist">
+                <label class="houselist-txt">House List</label>
+            </div>
+
+            <div class="search-box">
+                <label class="lb-entity">
+                    Show &nbsp
+                    <select id="pageSize">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                    </select>
+                    &nbsp objects
+                </label>
+                <input class="input-search" name="key" type="text" id="key" onkeydown="onSearch(this)" value="" />
+                <label class="lb-search">Search:</label>
+            </div>
+
+            <table class="table table-inbox table-hover" id="tableSort" style="border:2px solid #51545d;">
+                <thead>
+                    <tr class="unread">
+                        <th class="house-title1 th-head">Object</th>
+                        <th class="house-title1 th-head">Object Description</th>
+                        <th class="house-title1">OPERATION</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Houses)
+                    {
+                        <tr>
+                            <td onclick="myFunction(this)" class="view-message"><h5>@item.Object</h5></td>
+                            <td onclick="myFunction(this)" class="view-message"><h5>@item.ObjectDescription</h5></td>
+                            <td>
+                                <form method="post">
+                                    <span class="btn-group pull-right">
+                                        <a class="btn-info" href="https://www.google.com/maps/search/?api=1&query=@item.Latitude,@item.Longitude"><i class="glyphicon glyphicon-screenshot"></i>Map</a>
+                                        <a class="btn-edit" asp-page="/House/Edit" asp-route-id="@item.Object"><i class="glyphicon glyphicon-edit"></i>Edit</a>
+                                        <button type="submit" class="btn-del" asp-page-handler="Delete" asp-route-id="@item.Object" Onclick="return confirm('Are you sure to delete this house?');">
+                                            <i class="glyphicon glyphicon-remove"></i>Delete
+                                        </button>
+                                    </span>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <div class="pages-box">
+                <label class="lb-page" id="btn0"></label>
+                <label class="lb-page" id="sjzl"></label>
+                <button class="btn-page" id="btn4">Last</button>
+                <button class="btn-page" id="btn3">Next</button>
+                <button class="btn-page" id="btn2">Previous</button>
+                <button class="btn-page" id="btn1">First</button>
+                <label class="lb-page">Go to page</label>
+                <input id="changePage" type="text" size="1" maxlength="4" />
+                <button class="btn-page-go" id="btn5">Go</button>
+            </div>
+        </aside>
+    </div>
+</div>

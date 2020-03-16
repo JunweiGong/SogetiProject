@@ -1,0 +1,104 @@
+﻿@page
+@model ManageHouse.Pages.House.EditModel
+@{
+    ViewData["Title"] = "House Edit Page";
+}
+<script>
+    var bigPictureBox = document.getElementsByClassName("enlarge-pic");
+    var bigPicture = document.getElementsByClassName("bigPicture");
+
+    function hiddenBigPicture(x) {
+        bigPictureBox[0].style.display = "none";
+    };
+    function showBigPicture(x) {
+        bigPictureBox[0].style.display = "block";
+        bigPicture[0].src = x.src;
+    }
+
+</script>
+<div>
+    <div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><strong>House Information</strong></h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <form method="post" class="house-form">
+                        <div class="col-md-12" style="margin-top:15px;">
+                            <label asp-for="House.Object" style="font-weight:bold;"></label>
+                            <input type='text' class='form-control' asp-for="House.Object" style="width:350px;" />
+                            <span class="alert-danger" asp-validation-for="House.Object"></span>
+                        </div>
+
+                        <div class="col-md-12" style="margin-top:15px;">
+                            <label asp-for="House.ObjectDescription" style="font-weight:bold;"></label>
+                            <input type='text' class='form-control' asp-for="House.ObjectDescription" style="width:350px;" />
+                            <span class="alert-danger" asp-validation-for="House.ObjectDescription"></span>
+                        </div>
+
+                        <div class="col-md-12" style="margin-top:15px;">
+                            <label asp-for="House.Latitude" style="font-weight:bold;"></label>
+                            <input type='text' class='form-control' asp-for="House.Latitude" style="width:350px;" />
+                            <span class="alert-danger" asp-validation-for="House.Latitude"></span>
+                        </div>
+
+                        <div class="col-md-12" style="margin-top:15px;">
+                            <label asp-for="House.Longitude" style="font-weight:bold;"></label>
+                            <input type='text' class='form-control' asp-for="House.Longitude" style="width:350px;" />
+                            <span class="alert-danger" asp-validation-for="House.Longitude"></span>
+                        </div>
+
+                        <div class="text-center col-md-12 btn-box">
+                            <button class="btn-edit-2" type="submit" asp-page-handler="Edit">
+                                <i class="glyphicon glyphicon-edit"></i>Save
+                            </button>
+                        </div>
+                    </form>
+                    <div class="right-box">
+                        <div class="stage-box">
+                            <table class="table table-inbox table-hover" id="tableSort" style="border:1px solid #c1bebe;">
+                                <tbody>
+                                    @foreach (var item in Model.stageNameList)
+                                    {
+                                        <tr>
+                                            <td onclick="myFunction(this)" class="view-message  dont-show"><h5>@item</h5></td>
+                                            <td>
+                                                <form method="post">
+                                                    <span class="btn-group pull-right">
+                                                        <button type="submit" class="btn-del" asp-page-handler="Manage" asp-route-stagenumber="@item" asp-route-id="@Model.House.Object">
+                                                            <i class="glyphicon glyphicon-remove"></i>Manage Pictures
+                                                        </button>
+                                                    </span>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="pic-box">
+                            <ul class="gallery">
+                                @foreach (var item in Model.ImageList)
+                                {
+                                    <li>
+                                        <img src="@item.URI" class="img-thumbnail" onclick="showBigPicture(this)"/>
+                                        <form method="post">
+                                            <button type="submit" class="btn btn-primary btn-sx btn-delPic" asp-page-handler="Delete" asp-route-id="@Model.House.Object" asp-route-imageid="@item.Id"
+                                                    onclick="return confirm('Are you sure to delete this picture?')">Delete</button>
+                                        </form>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="enlarge-pic" align="center" >
+                <img src="" class="bigPicture" onclick="hiddenBigPicture(this)"/>
+            </div>
+        </div>
+    </div>
+</div>
+
